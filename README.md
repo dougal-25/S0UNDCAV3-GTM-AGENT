@@ -1,0 +1,108 @@
+# SoundCave GTM agent (v1)
+
+A scheduled agent for the SoundCave soft launch. Each run it listens in the
+music communities where your buyers gather, finds people who need release/event
+visuals and have no design budget, drafts a genuinely helpful peer reply for
+each, and drops the qualified leads into a Notion queue for you to review and
+post. **You stay the human who engages — the agent never posts on its own.**
+
+## What it does (the loop)
+
+```
+gather  -> pull candidate threads from Reddit that match a signal keyword
+reason  -> score buying intent 0-100 and tag the ICP segment   (Claude Haiku)
+reason  -> draft a peer reply for leads that clear the bar      (Claude Sonnet)
+act     -> write each qualified lead into a Notion queue
+observe -> print a run summary
+```
+
+## An honest note on what this is
+
+This v1 is a **scheduled workflow with Claude making the judgment calls**, not a
+fully model-driven loop. That's deliberate: discovery and listening are
+deterministic (no reason to let a model click around Reddit), and the parts that
+need judgment — *is this a real lead?* and *what's the right reply?* — are
+exactly where the model sits. It's cheaper, more predictable, and far easier to
+debug than handing the whole control flow to the model. The upgrade path to a
+genuinely model-driven agent is below.
+
+## Who it targets (ICP)
+
+Independent DJs and electronic producers; event/club-night promoters; small
+labels and artist managers; **and independent artists outside the dance scene**
+(singer-songwriters, bands, hip-hop, bedroom pop). Edit `src/config.py`
+(`COMMUNITIES`, `SEGMENTS`, `SIGNAL_KEYWORDS`) to retune the campaign.
+
+## The Notion database
+
+Create a database and add these properties with these **exact names and types**
+(the code matches on them). Then share the database with your Notion
+integration so the API key can write to it.
+
+| Property      | Type    | Notes                                            |
+|---------------|---------|--------------------------------------------------|
+| `Thread`      | Title   | The thread title                                 |
+| `Community`   | Select  | e.g. `r/edmproduction`                           |
+| `ICP segment` | Select  | matches `SEGMENTS` in config                     |
+| `Intent score`| Number  | 0–100                                            |
+| `Signal type` | Select  | e.g. `needs_flyer`, `design_cost_complaint`      |
+| `Promo policy`| Select  | `open` / `help_only` / `strict`                  |
+| `Status`      | Select  | seed with `New`; add `Reviewing/Posted/Converted`|
+| `Author`      | Text    | Reddit username                                  |
+| `Thread URL`  | URL     | used for dedupe — must exist                     |
+
+The "why it surfaced" note and the draft reply are written into each page's
+**body**, not properties.
+
+## Setup
+
+1. **Reddit API creds**: create a "script" app at
+   <https://www.reddit.com/prefs/apps> → gives you a client id + secret.
+2. **Notion**: create an internal integration at
+   <https://www.notion.com/my-integrations>, copy its key, build the database
+   above, share the database with the integration, and grab the database id
+   from its URL.
+3. **Anthropic**: an API key from the Anthropic console.
+4. Copy `.env.example` → `.env` and fill it in (local runs), **or** add the same
+   keys as GitHub repository secrets (scheduled runs).
+
+## Run it
+
+Local, on demand:
+```bash
+python -m venv .venv && source .venv/bin/activate
+pip install -r requirements.txt
+# put creds in .env, then:
+python -m src.run
+```
+
+On a schedule: push to GitHub, add the secrets, and `.github/workflows/gtm-agent.yml`
+runs it daily at ~8am UK. Trigger a manual run any time from the **Actions** tab
+(`Run workflow`) to test.
+
+## Tuning
+
+- `INTENT_THRESHOLD` — raise for fewer, higher-quality leads.
+- `POSTS_PER_COMMUNITY` / `SEARCH_LIMIT` — how deep it scans per sub.
+- `MAX_DRAFTS_PER_RUN` — cost guardrail on drafting calls.
+- `COMMUNITIES` — add/remove subs and set each one's `promo_policy` honestly.
+
+## Roadmap
+
+**v2**
+- **Sample asset in the outreach**: call your SoundCave pipeline (Fal/Replicate)
+  to generate an actual flyer/cover in the relevant style and attach it to the
+  draft. This is the single biggest conversion lever.
+- **Conversion tracking**: a `Converted` status + a weekly rollup of which
+  segments/communities/signal types actually convert, to refocus the campaign.
+- **Discord & Gearspace**: deferred from v1 because Discord needs a bot invited
+  per server and Gearspace reading is fragile. Add a Discord bot source once you
+  have a couple of servers where you're a welcome regular.
+
+**Agentic upgrade** (when judgment about *what to do next* starts mattering)
+Re-home the loop in the Claude Agent SDK / Claude Code so the model itself
+decides each run: which communities to prioritise this week, whether to go
+deeper on a hot thread, when to generate a sample vs. just reply. Same tools
+(Reddit, Notion, SoundCave, web search) become its action space; the cron just
+triggers it. Reach for this only when a fixed pipeline genuinely can't express
+what you want — not before.

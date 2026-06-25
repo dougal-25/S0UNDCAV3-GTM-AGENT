@@ -1,0 +1,16 @@
+# gitleaks config for the dwcw workspace.
+# Used by the local pre-push hook (.git/hooks/pre-push) and safe to run manually:
+#   gitleaks git . -c .gitleaks.toml --redact
+#
+# Binary/media assets are allowlisted: they aren't a credential-carrying surface and
+# decoding ~190MB of committed knowledge-base images across all history made scans
+# take >10min. Text files (where secrets actually live) are still fully scanned.
+
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Skip binary/media assets — not a secret surface, just slow to decode"
+paths = [
+  '''.*\.(png|jpe?g|gif|webp|svg|ico|mp4|mov|mp3|wav|flac|pdf|woff2?|ttf|otf|eot|zip|gz|tar)$''',
+]
