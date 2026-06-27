@@ -1,30 +1,17 @@
-# SoundCave GTM agent (v1)
+# SoundCave GTM Agent
 
-A scheduled agent for the SoundCave soft launch. Each run it listens in the
-music communities where your buyers gather, finds people who need release/event
-visuals and have no design budget, drafts a genuinely helpful peer reply for
-each, and drops the qualified leads into a Notion queue for you to review and
-post. **You stay the human who engages — the agent never posts on its own.**
+**Finds real buyers in public communities, scores their intent with Claude, and writes you a ready-to-send, personalized reply for each — queued to Notion for human review. It never auto-posts.**
 
-## What it does (the loop)
+A small, scheduled AI system built for the SoundCave soft launch. Each run it listens in the music communities where your buyers gather, finds people who need release/event visuals and have no design budget, scores how real each lead is, drafts a genuinely helpful peer reply for the good ones, and drops them into a Notion queue. **You stay the human who engages.**
 
 ```
-gather  -> pull candidate threads from Reddit that match a signal keyword
-reason  -> score buying intent 0-100 and tag the ICP segment   (Claude Haiku)
-reason  -> draft a peer reply for leads that clear the bar      (Claude Sonnet)
-act     -> write each qualified lead into a Notion queue
-observe -> print a run summary
+listen  →  pull candidate threads from Reddit matching a buying signal
+score   →  rate intent 0–100 + tag the ICP segment         (Claude Haiku)
+draft   →  write a peer reply for leads that clear the bar   (Claude Sonnet)
+queue   →  push each qualified lead into Notion for review
 ```
 
-## An honest note on what this is
-
-This v1 is a **scheduled workflow with Claude making the judgment calls**, not a
-fully model-driven loop. That's deliberate: discovery and listening are
-deterministic (no reason to let a model click around Reddit), and the parts that
-need judgment — *is this a real lead?* and *what's the right reply?* — are
-exactly where the model sits. It's cheaper, more predictable, and far easier to
-debug than handing the whole control flow to the model. The upgrade path to a
-genuinely model-driven agent is below.
+> **Why it's built this way.** Discovery and listening are deterministic — there's no reason to let a model click around Reddit. So this v1 is a scheduled workflow with Claude making only the judgment calls (*is this a real lead?* and *what's the right reply?*), not a fully model-driven loop. It's cheaper, more predictable, and far easier to debug. The upgrade path to a genuinely agentic loop is in the [Roadmap](#roadmap).
 
 ## Who it targets (ICP)
 
