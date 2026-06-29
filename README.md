@@ -4,6 +4,8 @@
 
 A small, scheduled AI system built for the SoundCave soft launch. Each run it listens in the music communities where your buyers gather, finds people who need release/event visuals and have no design budget, scores how real each lead is, drafts a genuinely helpful peer reply for the good ones, and drops them into a Notion queue. **You stay the human who engages.**
 
+This repo is more than the script: it's an **end-to-end, AI-built GTM system** — the listening **agent** (`src/`), the **growth strategy** it feeds (`wiki/spec/growth-strategy.md`), and the **executable marketing assets** to run it (`gtm/` — hooks bank, content calendar, waitlist landing page). The goal is concrete: **the first 100 real users, then a repeatable process for the next 900.**
+
 ```
 listen  →  pull candidate threads from Reddit matching a buying signal
 score   →  rate intent 0–100 + tag the ICP segment         (Claude Haiku)
@@ -19,6 +21,31 @@ Independent DJs and electronic producers; event/club-night promoters; small
 labels and artist managers; **and independent artists outside the dance scene**
 (singer-songwriters, bands, hip-hop, bedroom pop). Edit `src/config.py`
 (`COMMUNITIES`, `SEGMENTS`, `SIGNAL_KEYWORDS`) to retune the campaign.
+
+## Growth strategy — the first 100 users
+
+The agent finds leads; the [growth strategy](wiki/spec/growth-strategy.md) turns
+them into users. It's a content-led, founder-led, help-first motion run from one
+personal account per platform (X + Reddit), built as a repeatable loop:
+
+```
+LISTEN → EXTRACT → CREATE → DISTRIBUTE → CAPTURE → CONVERT → LEARN
+```
+
+The same help-first motion is also an **AEO/GEO play**: earn genuinely useful
+mentions in the sources LLMs cite (Reddit, YouTube, roundups) so SoundCave
+becomes part of the answer when someone asks "how do I make a cheap EP cover?".
+Bot-safety is built in — one real account, a human posts every time, the agent
+never does. Full write-up, channels, cadence, and metrics:
+[`wiki/spec/growth-strategy.md`](wiki/spec/growth-strategy.md).
+
+## Marketing assets (`gtm/`)
+
+Ready-to-run collateral for the campaign:
+
+- [`gtm/hooks-bank.md`](gtm/hooks-bank.md) — opening lines by hook type, segment, and AEO target question.
+- [`gtm/content-calendar.md`](gtm/content-calendar.md) — a 4-week rollout cadence + per-post checklist.
+- [`gtm/landing/index.html`](gtm/landing/index.html) — a working waitlist landing page (open it in a browser); copy in [`landing-copy.md`](gtm/landing/landing-copy.md).
 
 ## The Notion database
 
@@ -77,6 +104,10 @@ runs it daily at ~8am UK. Trigger a manual run any time from the **Actions** tab
 ## Roadmap
 
 **v2**
+- **Content engine (insight mode)**: reuse the Reddit listener to aggregate
+  threads into pain points, head questions, and content angles — feeding the
+  [growth strategy](wiki/spec/growth-strategy.md) instead of going 1:1. Specced
+  in [`wiki/features/content_engine.md`](wiki/features/content_engine.md).
 - **Sample asset in the outreach**: call your SoundCave pipeline (Fal/Replicate)
   to generate an actual flyer/cover in the relevant style and attach it to the
   draft. This is the single biggest conversion lever.
