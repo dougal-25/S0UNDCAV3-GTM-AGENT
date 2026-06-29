@@ -14,3 +14,15 @@ Append-only. Most recent at bottom.
 - Seeded wiki: spec/overview, decision 0001 (architecture & guardrails),
   feature page for the v1 loop.
 - Still not live: Notion DB not created, creds not wired, no run executed yet.
+
+## [2026-06-29] build | content GTM strategy + growth assets + Fleek application pack
+- Added the growth motion the agent feeds into: `wiki/spec/growth-strategy.md`
+  (first-100-users content loop, Reddit/X channels, AEO/GEO framing, bot-safety,
+  metrics) and `wiki/features/content_engine.md` (next build: insight mode reusing
+  the Reddit source — specced, not implemented).
+- Created `gtm/`: hooks bank, 4-week content calendar, and a working waitlist
+  landing page (`gtm/landing/index.html` + standalone copy). No backend yet.
+- Added `docs/ai-leverage-summary.md` — "how I used AI to 10x output," mapped to
+  the Fleek Organic Growth Lead (SEO & AI Search / AEO/GEO) role.
+- Reframed `README.md` to present the repo as an end-to-end AI-built GTM system
+  (agent + strategy + assets). No agent code touched.
