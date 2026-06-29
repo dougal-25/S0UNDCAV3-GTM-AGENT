@@ -1,25 +1,25 @@
 """
-The "act" / output step: append qualified leads to a Google Sheet.
+The "act" / output step: append qualified leads to a Google Sheet via an
+Apps Script web-app webhook.
 
-Google Sheets IS the state (see wiki decision 0002). The Actions runner is
-ephemeral, so we keep no local state -- dedupe is by Thread URL against the sheet
-itself.
+Why a webhook and not the Sheets API: the target Google account's org policy
+blocks service-account keys (iam.disableServiceAccountKeyCreation), so instead of
+authenticating from outside we drive the sheet from a container-bound Apps Script
+deployed as a web app. It runs as the sheet's owner -- no Google Cloud, no keys,
+nothing for the org policy to block. See wiki decision 0002 and the script to
+deploy in scripts/apps_script/Code.gs.
 
-Auth is a Google service account: put its full JSON key in the
-GOOGLE_SERVICE_ACCOUNT_JSON env var (a GitHub Actions secret in CI), and share
-the target sheet with that service account's email as an Editor. SHEET_ID is the
-key from the sheet URL: docs.google.com/spreadsheets/d/<SHEET_ID>/edit.
+Env:
+  SHEETS_WEBHOOK_URL    the Apps Script web-app /exec URL
+  SHEETS_WEBHOOK_TOKEN  optional shared secret (must match the script's TOKEN property)
 
-The column order in HEADERS MUST match the sheet's header row exactly (see README).
+The column order in HEADERS MUST match the sheet's header row AND the order the
+Apps Script's appendRow expects.
 """
-import json
 import os
 from datetime import date
 
-import gspread
-from google.oauth2.service_account import Credentials
-
-_SCOPES = ["https://www.googleapis.com/auth/spreadsheets"]
+import requests
 
 # Column order -- must match the header row in the sheet exactly.
 HEADERS = [
@@ -27,27 +27,23 @@ HEADERS = [
     "Promo policy", "Status", "Author", "Thread URL", "Why it surfaced",
     "Draft reply", "Date added",
 ]
-_URL_COL = HEADERS.index("Thread URL") + 1  # gspread columns are 1-indexed
-
-_ws = None
+_TIMEOUT = 30
 
 
-def _worksheet():
-    """Lazily authorise and cache the first worksheet of the leads sheet."""
-    global _ws
-    if _ws is None:
-        info = json.loads(os.environ["GOOGLE_SERVICE_ACCOUNT_JSON"])
-        creds = Credentials.from_service_account_info(info, scopes=_SCOPES)
-        client = gspread.authorize(creds)
-        _ws = client.open_by_key(os.environ["SHEET_ID"]).sheet1
-    return _ws
+def _post(payload: dict) -> dict:
+    """POST a JSON action to the Apps Script web app and return its JSON reply."""
+    body = {**payload, "token": os.environ.get("SHEETS_WEBHOOK_TOKEN", "")}
+    r = requests.post(os.environ["SHEETS_WEBHOOK_URL"], json=body, timeout=_TIMEOUT)
+    r.raise_for_status()
+    data = r.json()
+    if data.get("error"):
+        raise RuntimeError(f"sheets webhook error: {data['error']}")
+    return data
 
 
 def url_exists(url: str) -> bool:
     """True if a lead with this Thread URL is already in the sheet."""
-    # col_values() re-reads from the API each call, so rows appended earlier in
-    # this same run are seen -- dedupe stays correct within a run.
-    return url in _worksheet().col_values(_URL_COL)
+    return bool(_post({"action": "exists", "url": url}).get("exists"))
 
 
 def create_lead(lead: dict, draft: str) -> None:
@@ -65,4 +61,4 @@ def create_lead(lead: dict, draft: str) -> None:
         draft,
         date.today().isoformat(),
     ]
-    _worksheet().append_row(row, value_input_option="USER_ENTERED")
+    _post({"action": "create", "row": row})

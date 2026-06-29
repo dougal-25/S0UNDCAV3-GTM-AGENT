@@ -61,8 +61,8 @@ Dedupe is by Thread URL against the sheet.
 
 - **v1 loop: shipped** (adopted into dwcw 2026-06-25). See
   [feature page](../features/lead_discovery_and_queue.md).
-- **Not yet live:** the leads sheet exists, but the service-account creds aren't
-  wired and no run has executed yet.
+- **Not yet live:** the leads sheet exists, but the Apps Script webhook isn't
+  wired (`SHEETS_WEBHOOK_URL`) and no run has executed yet.
 - **Next (v2):** attach a real SoundCave sample asset per lead (the biggest
   conversion lever); conversion tracking. Both need a spec page + sign-off
   before building.

@@ -21,17 +21,20 @@ the ephemeral runner dedupes against.
   Leads") is the database. Dedupe is by the **Thread URL** column.
 - The Notion sink (`src/sinks/notion.py`) is **retired** (removed; recoverable
   from git history). The new sink is `src/sinks/sheets.py`.
-- **Auth:** a Google Cloud **service account** with the Sheets API enabled. Its
-  JSON key lives in `GOOGLE_SERVICE_ACCOUNT_JSON` (a GitHub Actions secret in CI,
-  `.env` locally); the sheet is shared with the service account's `client_email`
-  as an Editor. The sheet key lives in `SHEET_ID`.
+- **Auth:** an **Apps Script web app** bound to the sheet (`scripts/apps_script/Code.gs`),
+  deployed to run as the sheet owner. The agent POSTs lead rows to its `/exec`
+  URL (`SHEETS_WEBHOOK_URL`, optional shared secret `SHEETS_WEBHOOK_TOKEN`). No
+  Google Cloud, no service-account keys. _(We started with a service account but
+  the owner's Workspace org enforces `iam.disableServiceAccountKeyCreation`,
+  which blocks downloadable keys — the Apps Script route sidesteps it entirely.)_
 - **Columns** (the sheet's header row) are the source of truth for column order
   and MUST match `HEADERS` in `src/sinks/sheets.py` and the table in the README.
 
 ## Consequences
 
-- Setup trades Notion's "integration token + share DB" for "service account +
-  share sheet". Slightly more involved one-time setup, much nicer day-to-day.
+- Setup trades Notion's "integration token + share DB" for "paste + deploy an
+  Apps Script web app". Comparable one-time effort, no external credentials, and
+  a much nicer surface day-to-day.
 - The "why it surfaced" reasoning and the draft reply, which lived in the Notion
   page **body**, are now their own **columns** in the sheet.
 - This is a reversal of a load-bearing decision, recorded here per the wiki rule.

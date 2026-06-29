@@ -38,3 +38,13 @@ Append-only. Most recent at bottom.
 - Created the actual sheet in Doug's Drive (headers in place). Still to do: wire
   the service-account creds and run once.
 - Updated CLAUDE.md, README, and all wiki references from Notion → Sheets.
+
+## [2026-06-29] build | Sheets sink via Apps Script (org policy blocked SA keys)
+- The owner's Workspace org enforces `iam.disableServiceAccountKeyCreation`, so
+  service-account JSON keys can't be created. Pivoted the sink from gspread +
+  service account to an **Apps Script web app** webhook — runs as the sheet
+  owner, no Google Cloud, nothing for the policy to block.
+- `src/sinks/sheets.py` now POSTs to `SHEETS_WEBHOOK_URL` (optional
+  `SHEETS_WEBHOOK_TOKEN`); dropped `gspread`/`google-auth`, restored `requests`.
+- Added `scripts/apps_script/Code.gs` (the script to deploy). Updated ADR 0002,
+  CLAUDE.md, README setup, `.env.example`, and the workflow secrets accordingly.

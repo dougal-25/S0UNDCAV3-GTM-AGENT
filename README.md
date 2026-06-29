@@ -76,12 +76,12 @@ their own **columns**, not a page body.
 
 1. **Reddit API creds**: create a "script" app at
    <https://www.reddit.com/prefs/apps> → gives you a client id + secret.
-2. **Google Sheets**: in Google Cloud, create a **service account** with the
-   **Sheets API** enabled and download its JSON key. Create (or reuse) the leads
-   sheet with the header row above, **share it with the service account's
-   `client_email` as an Editor**, and copy the sheet key from its URL
-   (`docs.google.com/spreadsheets/d/<SHEET_ID>/edit`). Put the full JSON in
-   `GOOGLE_SERVICE_ACCOUNT_JSON` and the key in `SHEET_ID`.
+2. **Google Sheets** (no Google Cloud needed): open the leads sheet →
+   **Extensions → Apps Script**, paste [`scripts/apps_script/Code.gs`](scripts/apps_script/Code.gs),
+   and **Deploy → New deployment → Web app** (*Execute as: Me*, *Who has access:
+   Anyone*). Authorize it (it's your own script), copy the `/exec` URL into
+   `SHEETS_WEBHOOK_URL`. Optionally add a `TOKEN` script property and set the
+   same value in `SHEETS_WEBHOOK_TOKEN`. The agent POSTs leads to that URL.
 3. **Anthropic**: an API key from the Anthropic console.
 4. Copy `.env.example` → `.env` and fill it in (local runs), **or** add the same
    keys as GitHub repository secrets (scheduled runs).

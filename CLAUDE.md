@@ -61,9 +61,10 @@ scope — keep it represented in `SEGMENTS` and `COMMUNITIES`.
 
 ## Open threads / next up
 
-1. Wire creds: a Google service account (`GOOGLE_SERVICE_ACCOUNT_JSON`) + the
-   leads sheet id (`SHEET_ID`); share the sheet with the service account email.
-   The sheet itself already exists ("SoundCave GTM — Leads").
+1. Wire the sink: deploy `scripts/apps_script/Code.gs` from the leads sheet as a
+   Web app and set `SHEETS_WEBHOOK_URL` (+ optional `SHEETS_WEBHOOK_TOKEN`). The
+   sheet itself already exists ("SoundCave GTM — Leads"). No Google Cloud needed
+   (org policy blocks service-account keys — see decision 0002).
 2. v2 — generate a real SoundCave sample (Fal / Replicate) per lead and attach
    it to the draft. Highest conversion lever; build this next.
 3. v2 — conversion tracking: a `Converted` status + weekly rollup by

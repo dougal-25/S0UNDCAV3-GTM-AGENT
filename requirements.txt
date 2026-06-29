@@ -1,5 +1,4 @@
 praw>=7.7
 anthropic>=0.40
-gspread>=6.0
-google-auth>=2.0
+requests>=2.31
 python-dotenv>=1.0
