@@ -9,6 +9,7 @@ Catalogue of every wiki page. Updated whenever a page is added/renamed/removed.
 ## Features
 - [Lead discovery & lead queue](features/lead_discovery_and_queue.md) — the v1 gather→score→draft→queue loop (shipped)
 - [Content engine (insight mode)](features/content_engine.md) — aggregate threads into pain points + content angles (specced, not yet built)
+- [Content Planner (the full GTM loop)](features/content_planner.md) — research → script → produce → plan → publish → learn; X-auto / Reddit-manual (specced, not yet built)
 
 ## Decisions
 - [0001 — Architecture & guardrails](decisions/0001-architecture-and-guardrails.md) — scheduled workflow over agent loop; human-in-the-loop; promo-policy gating; state store (§4 superseded by 0002)

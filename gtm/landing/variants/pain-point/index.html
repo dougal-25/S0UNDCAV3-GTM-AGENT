@@ -1,20 +1,18 @@
 <!DOCTYPE html>
 <!--
-  SoundCave — waitlist landing page (CONTROL).
-  Self-contained except for shared styles.css + app.js in this folder. Open
-  directly in a browser. The form is front-end only (logs to console, shows a
-  thank-you state) — wire it to a backend before going live. Copy: ./landing-copy.md
-  Hook-test variants live in ./variants/* and differ ONLY in the hero. See ./README.md
+  HOOK-TEST VARIANT: "pain-point" — leads with the ache (the Friday-deadline grind).
+  Identical to the control except the hero block + data-variant. Shared styles/JS.
+  See ../../README.md for the test setup.
 -->
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>SoundCave — release-ready artwork, in seconds</title>
+<title>SoundCave — six pieces of artwork, by Friday, again</title>
 <meta name="description" content="AI media generation for music. Covers, single & EP art, flyers and promo graphics in named styles — fast and cheap. Join the early-access waitlist." />
-<link rel="stylesheet" href="styles.css" />
+<link rel="stylesheet" href="../../styles.css" />
 </head>
-<body data-variant="control">
+<body data-variant="pain-point">
 <div class="wrap">
 
   <nav>
@@ -24,8 +22,8 @@
 
   <header>
     <span class="eyebrow">AI media generation for music</span>
-    <h1>Release-ready artwork, in the time it takes to <span class="grad">name the track.</span></h1>
-    <p class="sub">SoundCave turns your music into covers, single &amp; EP art, flyers and promo graphics — in named styles, fast and cheap. Built for artists with no design budget and no patience for a back-and-forth with a designer.</p>
+    <h1>Six pieces of artwork. By Friday. <span class="grad">Again.</span></h1>
+    <p class="sub">Every release needs a cover, single art, social squares and a flyer — and a designer you can't afford. SoundCave makes the whole pack in named styles, in seconds, so the visuals stop being the part you dread.</p>
     <div class="cta-row">
       <a class="btn" href="#waitlist">Get early access</a>
       <span class="cta-note">Join the waitlist — no spend, no commitment.</span>
@@ -126,6 +124,6 @@
   </footer>
 
 </div>
-<script src="app.js"></script>
+<script src="../../app.js"></script>
 </body>
 </html>

@@ -45,7 +45,7 @@ Ready-to-run collateral for the campaign:
 
 - [`gtm/hooks-bank.md`](gtm/hooks-bank.md) — opening lines by hook type, segment, and AEO target question.
 - [`gtm/content-calendar.md`](gtm/content-calendar.md) — a 4-week rollout cadence + per-post checklist.
-- [`gtm/landing/index.html`](gtm/landing/index.html) — a working waitlist landing page (open it in a browser); copy in [`landing-copy.md`](gtm/landing/landing-copy.md).
+- [`gtm/landing/`](gtm/landing/README.md) — a working waitlist landing page plus **hook-test variants** (`variants/pain-point`, `show-and-tell`, `contrarian`) for A/B testing which hook converts; shared styles/JS, copy in [`landing-copy.md`](gtm/landing/landing-copy.md).
 
 ## The Google Sheet
 
@@ -114,6 +114,9 @@ runs it daily at ~8am UK. Trigger a manual run any time from the **Actions** tab
   threads into pain points, head questions, and content angles — feeding the
   [growth strategy](wiki/spec/growth-strategy.md) instead of going 1:1. Specced
   in [`wiki/features/content_engine.md`](wiki/features/content_engine.md).
+- **Content Planner (full GTM loop)**: research → script → produce → plan →
+  publish → learn, with X scheduling automated and Reddit posting kept human.
+  Specced in [`wiki/features/content_planner.md`](wiki/features/content_planner.md).
 - **Sample asset in the outreach**: call your SoundCave pipeline (Fal/Replicate)
   to generate an actual flyer/cover in the relevant style and attach it to the
   draft. This is the single biggest conversion lever.

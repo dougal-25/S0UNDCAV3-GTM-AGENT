@@ -48,3 +48,13 @@ Append-only. Most recent at bottom.
   `SHEETS_WEBHOOK_TOKEN`); dropped `gspread`/`google-auth`, restored `requests`.
 - Added `scripts/apps_script/Code.gs` (the script to deploy). Updated ADR 0002,
   CLAUDE.md, README setup, `.env.example`, and the workflow secrets accordingly.
+
+## [2026-06-29] build | content planner spec + hook-test landing variants
+- Specced `wiki/features/content_planner.md`: the full GTM loop (research →
+  script → produce → plan → publish → learn) with the X-auto / Reddit-manual
+  publishing rule and SoundCave as the PRODUCE step. Specced, not built.
+- Refactored the landing page to shared `styles.css` + `app.js` (the form now
+  tags each signup with its hook `variant`).
+- Added hook-test landing variants under `gtm/landing/variants/`
+  (pain-point, show-and-tell, contrarian), each identical to the control except
+  the hero hook, plus `gtm/landing/README.md` explaining the A/B method.
