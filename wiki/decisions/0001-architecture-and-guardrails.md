@@ -30,9 +30,11 @@ Each community in `config.py` carries a `promo_policy`: `open` / `help_only` /
 once, casually, never as an ad. Every draft helps first. Misjudging this burns
 the community permanently.
 
-### 4. Notion is the state
+### 4. Notion is the state — _SUPERSEDED by [0002](0002-sheets-as-state.md)_
 The Actions runner is ephemeral — no local persistence. Dedupe by Thread URL
-against the Notion database. Never assume a local store survives between runs.
+against the store. Never assume a local store survives between runs. _(The store
+is now a **Google Sheet**, not Notion — see [decision 0002](0002-sheets-as-state.md).
+The ephemeral-runner / dedupe-by-URL principle is unchanged.)_
 
 ### 5. Model split: Haiku scores, Sonnet drafts
 Scoring is high-volume and cheap → Haiku. Drafting is low-volume and

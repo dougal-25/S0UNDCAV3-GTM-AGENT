@@ -26,3 +26,15 @@ Append-only. Most recent at bottom.
   the Fleek Organic Growth Lead (SEO & AI Search / AEO/GEO) role.
 - Reframed `README.md` to present the repo as an end-to-end AI-built GTM system
   (agent + strategy + assets). No agent code touched.
+
+## [2026-06-29] decision | Google Sheets replaces Notion as the state
+- ADR `wiki/decisions/0002-sheets-as-state.md` supersedes 0001 §4. The lead store
+  is now a Google Sheet ("SoundCave GTM — Leads"), dedupe still by Thread URL.
+- Code: new `src/sinks/sheets.py` (gspread + service account); `run.py` rewired;
+  `src/sinks/notion.py` removed; `requirements.txt` swaps `requests` for
+  `gspread`/`google-auth`.
+- Secrets: `.env.example` + workflow now use `GOOGLE_SERVICE_ACCOUNT_JSON` +
+  `SHEET_ID` instead of `NOTION_API_KEY` / `NOTION_DB_ID`.
+- Created the actual sheet in Doug's Drive (headers in place). Still to do: wire
+  the service-account creds and run once.
+- Updated CLAUDE.md, README, and all wiki references from Notion → Sheets.

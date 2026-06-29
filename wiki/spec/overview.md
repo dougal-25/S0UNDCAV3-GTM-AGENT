@@ -6,7 +6,7 @@ A scheduled go-to-market agent for **SoundCave's soft launch**. Each run it
 listens in the music communities where SoundCave's buyers gather, finds people
 who need release/event visuals and have no design budget, scores their buying
 intent, drafts a genuinely helpful peer reply, and drops qualified leads into a
-**Notion queue** for Doug to review and post.
+**Google Sheet** for Doug to review and post.
 
 SoundCave = AI media generation for music (flyers, cover/single/EP art, promo
 graphics, social posts) in named styles (e.g. Etchings), fast and cheap, for
@@ -26,7 +26,7 @@ time on the human part — reviewing and posting in his own voice.
 gather  → pull candidate threads from Reddit matching a signal keyword   (PRAW, read-only)
 reason  → score buying intent 0–100 + tag ICP segment                     (Claude Haiku)
 reason  → draft a peer reply for leads that clear the bar                  (Claude Sonnet)
-act     → write each qualified lead into a Notion queue (dedupe by URL)
+act     → append each qualified lead to a Google Sheet (dedupe by URL)
 observe → print a run summary
 ```
 
@@ -54,13 +54,15 @@ observe → print a run summary
 ## State / source of truth
 
 The GitHub Actions runner is ephemeral, so there is no local persistence —
-**Notion IS the state.** Dedupe is by Thread URL against the Notion database.
+**Google Sheets IS the state** ([decision 0002](../decisions/0002-sheets-as-state.md)).
+Dedupe is by Thread URL against the sheet.
 
 ## Status
 
 - **v1 loop: shipped** (adopted into dwcw 2026-06-25). See
   [feature page](../features/lead_discovery_and_queue.md).
-- **Not yet live:** Notion DB not created, creds not wired, no run executed yet.
+- **Not yet live:** the leads sheet exists, but the service-account creds aren't
+  wired and no run has executed yet.
 - **Next (v2):** attach a real SoundCave sample asset per lead (the biggest
   conversion lever); conversion tracking. Both need a spec page + sign-off
   before building.

@@ -23,7 +23,7 @@ generation for musicians). Each run it:
 2. **Scores** every thread for buying intent with a cheap model (Claude Haiku).
 3. **Drafts** a genuinely helpful, peer-voice reply with a stronger model (Claude
    Sonnet), gated by each community's promo policy.
-4. **Queues** qualified leads to Notion for human review — it never auto-posts.
+4. **Queues** qualified leads to a Google Sheet for human review — it never auto-posts.
 
 Around that engine I built the growth motion it feeds: a documented strategy
 (`wiki/spec/growth-strategy.md`), a 4-week content calendar, a hooks bank, and a

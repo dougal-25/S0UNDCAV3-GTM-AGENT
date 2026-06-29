@@ -26,8 +26,8 @@ instead of acting on one:
    - **Head questions** the ICP keeps asking (the AEO/GEO targets).
    - **Content angles** — what would make a great showcase post/video, tagged by
      segment + platform (Reddit/X) + hook type.
-3. **Output** — a new sink writes a **content brief** (not a lead) to Notion (or
-   a markdown digest): top pain points this week, ranked head questions, and
+3. **Output** — a new sink writes a **content brief** (not a lead) to a Google
+   Sheet tab (or a markdown digest): top pain points this week, ranked head questions, and
    3–5 suggested hooks ready to drop into [`gtm/hooks-bank.md`](../../gtm/hooks-bank.md).
 
 ## How it reuses the existing system
@@ -36,7 +36,7 @@ instead of acting on one:
 - **Reason:** a sibling to `src/reason/classify.py` (same Anthropic client
   pattern, same fence-stripping JSON handling) with a new prompt
   `src/prompts/insights.md`.
-- **Sink:** a sibling to `src/sinks/notion.py` writing to a "Content briefs" DB,
+- **Sink:** a sibling to `src/sinks/sheets.py` writing to a "Content briefs" tab,
   or a markdown file for a zero-setup start.
 - **Config:** add an `INSIGHT_MODE` switch / a separate entrypoint
   (`python -m src.insights`) so the lead loop and the insight loop run

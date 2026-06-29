@@ -3,7 +3,7 @@
   SoundCave — waitlist landing page (front-end mock).
   Self-contained: no build step, no external deps. Open directly in a browser.
   The form is front-end only; on submit it shows a thank-you state and logs the
-  payload to the console. Wire to a real backend (Formspree / Notion / your API)
+  payload to the console. Wire to a real backend (Formspree / Google Sheets / your API)
   before going live. Copy source: ./landing-copy.md
 -->
 <html lang="en">
@@ -228,7 +228,7 @@
 </div>
 
 <script>
-  // Front-end only. Replace this with a real POST (Formspree / Notion / your API).
+  // Front-end only. Replace this with a real POST (Formspree / Google Sheets / your API).
   document.getElementById('waitlist-form').addEventListener('submit', function (e) {
     e.preventDefault();
     var payload = {

@@ -1,7 +1,7 @@
 # CLAUDE.md — SoundCave GTM agent
 
 Persistent project context for Claude Code. Read alongside `README.md` (full
-setup, Notion schema, roadmap). This file is the **decisions and guardrails** —
+setup, sheet schema, roadmap). This file is the **decisions and guardrails** —
 not a re-description of the code. Keep it high-signal; every line should change
 how you act.
 
@@ -10,7 +10,7 @@ how you act.
 A scheduled go-to-market agent for SoundCave's soft launch. Each run it listens
 in music communities, finds people who need release/event visuals and have no
 design budget, scores buying intent, drafts a peer reply, and queues qualified
-leads in Notion for a human to review and post. SoundCave = AI media generation
+leads in a Google Sheet for a human to review and post. SoundCave = AI media generation
 for music (flyers, cover/single/EP art, promo graphics) in named styles
 (e.g. Etchings).
 
@@ -28,8 +28,9 @@ for music (flyers, cover/single/EP art, promo graphics) in named styles
 - **Respect each community's `promo_policy`** (open / help_only / strict) in
   `config.py`. SoundCave may be named ONLY where policy is "open", and even then
   once, casually, never as an ad. Every draft helps first.
-- **Notion is the state.** The Actions runner is ephemeral — dedupe by Thread
-  URL against Notion; never assume local persistence.
+- **Google Sheets is the state.** (Was Notion; see
+  `wiki/decisions/0002-sheets-as-state.md`.) The Actions runner is ephemeral —
+  dedupe by Thread URL against the sheet; never assume local persistence.
 
 ## ICP (drives which rooms it lives in)
 
@@ -55,13 +56,14 @@ scope — keep it represented in `SEGMENTS` and `COMMUNITIES`.
 - `src/run.py` — the loop: gather → score → draft → write → summarise
 - `src/sources/reddit.py` — listening (PRAW, read-only, public threads)
 - `src/reason/{classify,draft}.py` + `src/prompts/*.md` — the judgment steps
-- `src/sinks/notion.py` — write leads, dedupe by URL
+- `src/sinks/sheets.py` — append leads to the Google Sheet, dedupe by URL
 - `.github/workflows/gtm-agent.yml` — daily cron + manual trigger
 
 ## Open threads / next up
 
-1. Create the Notion database (exact property names in README) and wire its id
-   into `NOTION_DB_ID`.
+1. Wire creds: a Google service account (`GOOGLE_SERVICE_ACCOUNT_JSON`) + the
+   leads sheet id (`SHEET_ID`); share the sheet with the service account email.
+   The sheet itself already exists ("SoundCave GTM — Leads").
 2. v2 — generate a real SoundCave sample (Fal / Replicate) per lead and attach
    it to the draft. Highest conversion lever; build this next.
 3. v2 — conversion tracking: a `Converted` status + weekly rollup by

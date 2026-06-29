@@ -73,7 +73,7 @@ SIGNAL_KEYWORDS = [
 
 # ---------------------------------------------------------------------------
 # How many recent + search-matched posts to pull per community per run,
-# and the minimum intent score (0-100) required to surface a lead to Notion.
+# and the minimum intent score (0-100) required to surface a lead to the sheet.
 # ---------------------------------------------------------------------------
 POSTS_PER_COMMUNITY = 25       # recent posts scanned per sub
 SEARCH_LIMIT = 15              # keyword-search hits scanned per sub

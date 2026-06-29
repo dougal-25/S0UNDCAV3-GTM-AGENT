@@ -5,7 +5,7 @@ This is the loop from the diagram, made concrete. For each community it:
   gather   -> pull candidate threads (sources/reddit.py)
   reason   -> score intent + tag segment (reason/classify.py)
   reason   -> draft a peer reply for the ones that clear the bar (reason/draft.py)
-  act      -> write qualified leads into Notion (sinks/notion.py)
+  act      -> append qualified leads to a Google Sheet (sinks/sheets.py)
   observe  -> print a run summary you can read each morning
 
 It is deliberately a SCHEDULED WORKFLOW with Claude making the judgment calls,
@@ -22,7 +22,7 @@ import traceback
 from .config import COMMUNITIES, INTENT_THRESHOLD, MAX_DRAFTS_PER_RUN
 from .sources import reddit
 from .reason import classify, draft as drafter
-from .sinks import notion
+from .sinks import sheets
 
 
 def run() -> None:
@@ -56,7 +56,7 @@ def run() -> None:
                 continue
 
             try:
-                if notion.url_exists(lead["url"]):
+                if sheets.url_exists(lead["url"]):
                     print(f"  seen {tag}")
                     continue
             except Exception as e:
@@ -70,13 +70,13 @@ def run() -> None:
             try:
                 reply = drafter.draft_reply(lead)
                 drafts_made += 1
-                notion.create_lead(lead, reply)
+                sheets.create_lead(lead, reply)
                 surfaced += 1
                 print(f"  ADD  {tag}  -> {lead.get('segment')}")
             except Exception as e:
                 print(f"  ! draft/write failed: {e}")
 
-    print(f"\n--- run complete: scanned {scanned}, surfaced {surfaced} new lead(s) to Notion ---")
+    print(f"\n--- run complete: scanned {scanned}, surfaced {surfaced} new lead(s) to the sheet ---")
 
 
 if __name__ == "__main__":

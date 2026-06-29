@@ -1,6 +1,6 @@
-# Feature — Lead discovery & Notion queue (v1 loop)
+# Feature — Lead discovery & lead queue (v1 loop)
 
-**Status:** Shipped (code complete) · **Not yet live** (no creds, no Notion DB, no run executed)
+**Status:** Shipped (code complete) · **Not yet live** (creds not wired, no run executed)
 
 ## What it does
 
@@ -16,8 +16,9 @@ The end-to-end v1 loop. For each configured subreddit:
    `MAX_DRAFTS_PER_RUN`.
 4. **draft** — `src/reason/draft.py` (Sonnet) writes a peer reply, gated by the
    community's `promo_policy`.
-5. **act** — `src/sinks/notion.py` writes the lead as a Notion page (properties
-   + "why it surfaced" note + draft reply in the body), deduped by Thread URL.
+5. **act** — `src/sinks/sheets.py` appends the lead as a row to the Google Sheet
+   (one column per field, incl. "why it surfaced" + draft reply), deduped by
+   Thread URL ([decision 0002](../decisions/0002-sheets-as-state.md)).
 6. **observe** — `src/run.py` prints a run summary.
 
 ## Config knobs (`src/config.py`)
@@ -34,9 +35,9 @@ The end-to-end v1 loop. For each configured subreddit:
       killing the run
 - [x] Scores intent + segment; only surfaces leads ≥ threshold
 - [x] Drafts respect `promo_policy` (SoundCave named only in `open` rooms)
-- [x] Writes to Notion with dedupe by Thread URL
+- [x] Writes to the Google Sheet with dedupe by Thread URL
 - [x] Local runs load `.env` (fixed at adoption — was missing `load_dotenv()`)
-- [ ] Notion database created with the exact property schema (see README)
+- [x] Leads sheet created with the exact column schema (see README)
 - [ ] Creds wired (`.env` locally / repo secrets for Actions)
 - [ ] First real run executed and reviewed
 
