@@ -38,7 +38,8 @@ The end-to-end v1 loop. For each configured subreddit:
 - [x] Writes to the Google Sheet with dedupe by Thread URL
 - [x] Local runs load `.env` (fixed at adoption — was missing `load_dotenv()`)
 - [x] Leads sheet created with the exact column schema (see README)
-- [ ] Creds wired (`.env` locally / repo secrets for Actions)
+- [x] Sheets sink wired + tested (Apps Script webhook live; a row writes end-to-end)
+- [ ] Anthropic + Reddit keys wired (`.env` locally / repo secrets for Actions)
 - [ ] First real run executed and reviewed
 
 ## Known gaps / next
@@ -52,4 +53,5 @@ The end-to-end v1 loop. For each configured subreddit:
 
 ## History
 
-- 2026-06-25 — adopted into dwcw; fixed the local-run `.env` loading bug.
+- 2026-06-25 — brought into the workspace as its own repo; fixed the local-run `.env` loading bug.
+- 2026-06-29 — migrated the sink from Notion to a Google Sheet via Apps Script webhook (decisions 0002).

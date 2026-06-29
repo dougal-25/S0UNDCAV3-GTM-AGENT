@@ -1,4 +1,4 @@
-# gitleaks config for the dwcw workspace.
+# gitleaks config for the SoundCave GTM agent repo.
 # Used by the local pre-push hook (.git/hooks/pre-push) and safe to run manually:
 #   gitleaks git . -c .gitleaks.toml --redact
 #
